@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
 
 url = 'https://www.monster.com/jobs/search/?q=Python-Developer&where=Indianapolis__2C-IN&intcid=skr_navigation_nhpso_searchMain'
@@ -8,13 +9,13 @@ page = requests.get(url)
 
 soup = BeautifulSoup(page.content, 'html.parser')
 results = soup.find(id='SearchResults')
-#print(results.prettify())
+# print(results.prettify())
 
 
 job_elems = results.find_all('section', class_='card-content')
 
-#for job_elem in job_elems:
-    #print(job_elem, end='\n' * 2)
+# for job_elem in job_elems:
+#print(job_elem, end='\n' * 2)
 
 
 for job_elem in job_elems:
@@ -29,8 +30,10 @@ for job_elem in job_elems:
     print()
 
 
-python_jobs = results.find_all('h2', string=lambda text: 'python' in text.lower())
+python_jobs = results.find_all(
+    'h2', string=lambda text: 'python' in text.lower())
 print(len(python_jobs))
+
 
 for p_job in python_jobs:
     link = p_job.find('a')['href']
